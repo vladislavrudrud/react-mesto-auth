@@ -1,0 +1,18 @@
+.element__button {
+    width: 22px;
+    height: 19px;
+    background-image: url(../../../images/VectorLove.svg);
+    background-size: 22px 19px;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    background-color: transparent;
+    flex-shrink: 0;
+    margin-top: 10px;
+
+}
+
+.element__button:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}

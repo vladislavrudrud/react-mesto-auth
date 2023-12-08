@@ -1,0 +1,7 @@
+.element__like_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 28px;
+    margin: 10px 20px 0 auto;
+}

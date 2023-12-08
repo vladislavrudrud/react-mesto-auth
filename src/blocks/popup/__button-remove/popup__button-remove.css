@@ -1,0 +1,10 @@
+.popup__button-remove {
+    margin: 0 36px 36px;
+    background-color: black;
+    font-size: 18px;
+    color: white;
+    opacity: 1;
+}
+.popup__button-remove:hover {
+    opacity: 0.8;
+}

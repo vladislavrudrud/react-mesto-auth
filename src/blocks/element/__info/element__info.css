@@ -1,0 +1,7 @@
+.element__info {
+    max-width: 282px;
+    display: flex;
+    flex-direction: row;
+    background-color: #FFFFFF;
+    border-radius: 0 0 10px 10px;
+}

@@ -1,0 +1,10 @@
+.login__title{
+    width: 100%;
+    margin-bottom: 20px;
+    font-family: "Inter";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    text-align: center;
+}

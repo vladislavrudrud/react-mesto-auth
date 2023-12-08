@@ -1,0 +1,15 @@
+.popup__photo {
+    display: block;
+    max-width: 75vw;
+    max-height: 75vh;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+@media screen and (max-width: 900px) {
+    .popup__photo {
+        width: 240px;
+        height: 299px;
+    }
+}
