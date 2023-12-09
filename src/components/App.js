@@ -132,7 +132,7 @@ function App() {
   const handleRegistration = async (email, password) => {
     try {
       await auth.register(email, password);
-      setTooltipContent({ text: "Регистрация успешна!", image: open });
+      setTooltipContent({ text: "Вы успешно зарегистрировались!", image: open });
       setIsTooltipOpen(true);
       await Promise.resolve();
       navigate("/sign-in", { replace: true });
@@ -159,7 +159,7 @@ function App() {
     } catch (err) {
       console.log(err);
       setTooltipContent({
-        text: "Вы успешно зарегистрировались!",
+        text: "",
         image: open,
       });
       setIsTooltipOpen(true);
