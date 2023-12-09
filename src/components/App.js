@@ -159,8 +159,8 @@ function App() {
     } catch (err) {
       console.log(err);
       setTooltipContent({
-        text: "",
-        image: open,
+        text: "Что-то пошло не так! Попробуйте ещё раз.",
+        image: close,
       });
       setIsTooltipOpen(true);
     }
