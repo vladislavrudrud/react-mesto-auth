@@ -30,8 +30,11 @@ function App() {
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
-  const [isTooltipSuccessPopup, setIsTooltipSuccessPopup] = useState(false);
-  const [isTooltipErrorPopup, setIsTooltipErrorPopup] = useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+  const [tooltipContent, setTooltipContent] = useState({
+    text: "",
+    image: null,
+  });
 
   useEffect(() => {
     if (loggedIn) {
@@ -66,8 +69,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsDeletePlacePopup(false);
     setSelectedCard(null);
-    setIsTooltipSuccessPopup(false);
-    setIsTooltipErrorPopup(false);
+    setIsTooltipOpen(false);
   };
 
   function handleUpdateUser(data) {
@@ -111,7 +113,7 @@ function App() {
   function handleCardDelete(card) {
     api
       .removeCard(card._id)
-      .then(setCards((state) => state.filter((c) => c._id !== card._id)))
+      .then(() => setCards((state) => state.filter((c) => c._id !== card._id)))
       .catch((err) => console.log(err));
   }
 
@@ -130,31 +132,38 @@ function App() {
   const handleRegistration = async (email, password) => {
     try {
       await auth.register(email, password);
-      setIsTooltipSuccessPopup(true);
+      setTooltipContent({ text: "Регистрация успешна!", image: open });
+      setIsTooltipOpen(true);
       await Promise.resolve();
       navigate("/sign-in", { replace: true });
     } catch (err) {
       console.log(err);
-      setIsTooltipErrorPopup(true);
+      setTooltipContent({
+        text: "Что-то пошло не так! Попробуйте ещё раз.",
+        image: close,
+      });
+      setIsTooltipOpen(true);
     }
   };
 
-  const handleAuthorization = (email, password) => {
-    auth
-      .authorize(email, password)
-      .then((res) => {
-        if (res.token) {
-          localStorage.setItem("token", res.token);
-          setUserEmail(email);
-          setLoggedIn(true);
-          navigate("/", { replace: true });
-          return res;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsTooltipErrorPopup(true);
+  const handleAuthorization = async (email, password) => {
+    try {
+      const res = await auth.authorize(email, password);
+      if (res.token) {
+        localStorage.setItem("token", res.token);
+        setUserEmail(email);
+        setLoggedIn(true);
+        navigate("/", { replace: true });
+        return res;
+      }
+    } catch (err) {
+      console.log(err);
+      setTooltipContent({
+        text: "Вы успешно зарегистрировались!",
+        image: open,
       });
+      setIsTooltipOpen(true);
+    }
   };
 
   const handleToken = (jwt) => {
@@ -178,7 +187,7 @@ function App() {
     }
   }, []);
 
-  const handleRemoveToken = () => {
+  const handleLogout = () => {
     setLoggedIn(false);
     localStorage.removeItem("token");
     navigate("/sign-in", { replace: true });
@@ -187,7 +196,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header email={userEmail} onLogout={handleRemoveToken} />
+        <Header email={userEmail} onLogout={handleLogout} />
         <Routes>
           <Route
             path="*"
@@ -252,16 +261,16 @@ function App() {
       ></PopupWithForm>
       <ImagePopup card={selectedCard} onClose={closeAllPopups}></ImagePopup>
       <InfoTooltip
-        isOpen={isTooltipSuccessPopup}
+        isOpen={isTooltipOpen}
         onClose={closeAllPopups}
-        title={"Вы успешно зарегистрировались!"}
-        image={open}
+        title={tooltipContent.text}
+        image={tooltipContent.image}
       />
       <InfoTooltip
-        isOpen={isTooltipErrorPopup}
+        isOpen={isTooltipOpen}
         onClose={closeAllPopups}
-        title={"Что-то пошло не так! Попробуйте ещё раз."}
-        image={close}
+        title={tooltipContent.text}
+        image={tooltipContent.image}
       />
       {loggedIn && <Footer />}
     </CurrentUserContext.Provider>
