@@ -266,12 +266,6 @@ function App() {
         title={tooltipContent.text}
         image={tooltipContent.image}
       />
-      <InfoTooltip
-        isOpen={isTooltipOpen}
-        onClose={closeAllPopups}
-        title={tooltipContent.text}
-        image={tooltipContent.image}
-      />
       {loggedIn && <Footer />}
     </CurrentUserContext.Provider>
   );
